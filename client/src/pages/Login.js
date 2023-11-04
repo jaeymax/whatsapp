@@ -1,7 +1,10 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import './Login.css'
 import axios from 'axios'
 import { Alert } from '@mui/material'
+import {CircularProgress} from '@mui/material'
+import { useAuthContext } from '../context/authContext'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
@@ -10,26 +13,37 @@ const Login = () => {
          "password":""
       });
     
+    const navigate = useNavigate();
 
     const {email, password} = formData;
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const {user, setUser} = useAuthContext();
+
+    useEffect(()=>{
+
+       if(user){
+        navigate('/');
+       } 
+    },[user])
 
       const handleSubmit = async (e) =>{
          e.preventDefault();
         try{
-            console.log(email, password);
             setLoading(true);
             const response = await axios.post('http://localhost:5000/api/users/login',{email,password});
-            //const data = await response.json();
-            //console.log(data);
+            if(response.status == 200){
+                localStorage.setItem('userInfo', JSON.stringify(response.data));
+                setUser(response.data);
+            }
+            setLoading(false);
         }
         catch(err){
             const response = await err.response;
             setError(response.data.message);
             setLoading(false);
         }
-        setLoading(false);
+    
       }
     
       const handleChange = (e) =>{
@@ -43,7 +57,9 @@ const Login = () => {
       }
 
   if(loading){
-    return <h1>Loading</h1>
+    return <div className="login">
+        <CircularProgress/>
+    </div>
   }
 
   return (

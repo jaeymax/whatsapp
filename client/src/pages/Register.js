@@ -1,7 +1,9 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import './Register.css';
 import axios from 'axios';
-import { Alert } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/authContext';
 
 const Register = () => {
 
@@ -15,6 +17,15 @@ const Register = () => {
   const {name, email, password, confirm_password} = formData;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const {user, setUser} = useAuthContext();
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+      if(user){
+        navigate('/');
+      }
+  },[user]);
 
   const handleSubmit = async (e) =>{
      e.preventDefault();
@@ -27,7 +38,12 @@ const Register = () => {
      try{
         setLoading(true);
         const response = await axios.post('http://localhost:5000/api/users/', {name, email, password});
-        const data = await response.json();
+        
+        if(response.status == 200){
+            localStorage.setItem('userInfo', response.data);
+            setUser(response.data);
+        }
+        setLoading(false);
      }
      catch(err){
         console.log(err);
@@ -50,7 +66,9 @@ const Register = () => {
 
   
   if(loading){
-    return <h1>Loading</h1>
+    return <div className="register">
+         <CircularProgress/>
+    </div>
   }
 
   return (
