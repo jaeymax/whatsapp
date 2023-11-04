@@ -95,9 +95,8 @@ const loginUser = asyncHandler(async(req:Request, res:Response) =>{
 });
 
 const getUsers = asyncHandler(async (req:Request, res:Response) =>{
-    const search = req.query;
-    console.log(search);
-    const users = await User.find({}).select('-password');
+    const filter = req.query.name?{name:{$regex:req.query.name,$options:"i"}}:{}
+    const users = await User.find(filter).find({_id:{$ne:req.user._id}}).select('-password');
 
     res.status(200).json(users);
 })
