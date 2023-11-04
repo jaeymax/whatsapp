@@ -5,6 +5,7 @@ import chatRoutes from './routes/chatRoutes';
 import messageRoutes from './routes/messageRoutes';
 import dotenv from 'dotenv'
 import connectDB from './config/db'
+import cors from 'cors';
 
 
 const app:Application = express();
@@ -14,6 +15,7 @@ dotenv.config();
 connectDB(process.env.MONGO_URI as string);
 
 //Middewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use('/api/users', userRoutes);

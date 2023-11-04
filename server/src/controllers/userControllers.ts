@@ -72,7 +72,8 @@ const registerUser =asyncHandler(async(req:Request, res:Response) =>{
 
 const loginUser = asyncHandler(async(req:Request, res:Response) =>{
     const {email, password} = req.body;
-
+     console.log(req.body);
+     
     if(!email || !password){
         res.status(400);
         throw new Error("Please enter email and password");

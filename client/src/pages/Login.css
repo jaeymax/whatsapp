@@ -6,3 +6,9 @@
     display: grid;
     place-items: center;
 }
+
+.error-message{
+    background-color: rgba(248, 29, 0, 0.788);
+    padding: 10px;
+    border-radius: 5px;
+}
