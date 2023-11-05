@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Sidebar.css';
 import SidebarChat from './SidebarChat';
 import {Avatar,IconButton} from '@mui/material';
@@ -8,8 +8,17 @@ import { useAuthContext } from '../context/authContext';
 
 const Sidebar = () => {
 
-  const {chats} = useChatContext();
+  const {chats,selectedChat,setSelectedChat} = useChatContext();
   const {user} = useAuthContext();
+
+  useEffect(()=>{
+
+    console.log(chats);
+    if(chats.length>0){
+      setSelectedChat(chats[0]._id);
+    }
+  },[chats])
+
 
   return (
     <div className='sidebar'>
@@ -39,7 +48,7 @@ const Sidebar = () => {
          {
           chats.map(chat =>{
             const chatUser = (user._id === chat.users[1]._id)?chat.users[0]:chat.users[1];
-            return <SidebarChat key={chat._id} name = {chatUser.name} image_url={chatUser.image_url} lastMessage = {'This is real time'}  />
+            return <SidebarChat key={chat._id} id = {chat._id} name = {chatUser.name} image_url={chatUser.image_url} lastMessage = {'This is real time'}  />
 
           })
          }

@@ -13,15 +13,14 @@ const createMessage = async (req:Request, res:Response) =>{
         throw new Error('Invalid message data');
      }
      else{
-        return res.sendStatus(201);
+        return res.status(201).json(message);
      }
      
 }
 
 const getMessages = async (req:Request, res:Response) =>{
-    const {chatId} = req.body;
 
-    const messages = await messageModel.find({chat:chatId});
+    const messages = await messageModel.find({chat:req.query.chatId}).populate('to', '-password').populate('from', '-password');
 
     res.status(200).json(messages);
 }

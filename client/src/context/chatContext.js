@@ -7,6 +7,7 @@ const chatContext = createContext();
 const ChatProvider = ({children}) => {
    const [chats, setChats] = useState([]);
    const {user} = useAuthContext();
+   const [selectedChat, setSelectedChat] = useState(null);
 
     const getChats = async () =>{
         try{
@@ -17,6 +18,7 @@ const ChatProvider = ({children}) => {
             }
             const response = await axios.get('http://localhost:5000/api/chats', config);
             setChats(response.data);
+
         }
         catch(err){
             console.log(err);
@@ -26,11 +28,12 @@ const ChatProvider = ({children}) => {
     useEffect(()=>{
         if(user){
            getChats();
+
         }
     },[user]);
 
   return (
-    <chatContext.Provider value={{chats,setChats}} >
+    <chatContext.Provider value={{chats,setChats,selectedChat,setSelectedChat}} >
         {children}
     </chatContext.Provider>
   )
