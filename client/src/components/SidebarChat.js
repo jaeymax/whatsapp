@@ -4,13 +4,13 @@ import {Avatar} from '@mui/material';
 import { useChatContext } from '../context/chatContext';
 
 
-const SidebarChat = ({name, id, image_url, lastMessage}) => {
+const SidebarChat = ({name, id, image_url, lastMessage, chat}) => {
 
-  const {selectedChat, setSelectedChat} = useChatContext();
+  const {setSelectedChat} = useChatContext();
 
   const handleClick = () =>{
     console.log(`chat with ${name}`);
-    setSelectedChat(id);
+    setSelectedChat(chat);
   }
 
   return (

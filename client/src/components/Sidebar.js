@@ -8,14 +8,14 @@ import { useAuthContext } from '../context/authContext';
 
 const Sidebar = () => {
 
-  const {chats,selectedChat,setSelectedChat} = useChatContext();
+  const {chats,setSelectedChat} = useChatContext();
   const {user} = useAuthContext();
 
   useEffect(()=>{
 
     console.log(chats);
     if(chats.length>0){
-      setSelectedChat(chats[0]._id);
+      setSelectedChat(chats[0]);
     }
   },[chats])
 
@@ -48,7 +48,7 @@ const Sidebar = () => {
          {
           chats.map(chat =>{
             const chatUser = (user._id === chat.users[1]._id)?chat.users[0]:chat.users[1];
-            return <SidebarChat key={chat._id} id = {chat._id} name = {chatUser.name} image_url={chatUser.image_url} lastMessage = {'This is real time'}  />
+            return <SidebarChat key={chat._id} id = {chat._id} name = {chatUser.name} image_url={chatUser.image_url} lastMessage = {chat.lastMessage?.body} chat = {chat}  />
 
           })
          }

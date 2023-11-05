@@ -4,7 +4,7 @@ import { useAuthContext } from '../context/authContext';
 
 const ChatMessage = ({senderName, senderId, receiverName, receiverId, body, time}) => {
 
-    const {user} = useAuthContext();
+  const {user} = useAuthContext();
 
   return (
     <p className ={`chat__message ${user._id!==senderId && 'received'}`}>
