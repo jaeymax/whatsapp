@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import './Register.css';
 import axios from 'axios';
-import { Alert, CircularProgress } from '@mui/material';
+import { Alert, CircularProgress,Backdrop } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/authContext';
 
@@ -39,8 +39,8 @@ const Register = () => {
         setLoading(true);
         const response = await axios.post('http://localhost:5000/api/users/', {name, email, password});
         
-        if(response.status == 200){
-            localStorage.setItem('userInfo', response.data);
+        if(response.status == 201){
+            localStorage.setItem('userInfo', JSON.stringify(response.data));
             setUser(response.data);
         }
         setLoading(false);
@@ -66,8 +66,12 @@ const Register = () => {
 
   
   if(loading){
-    return <div className="register">
-         <CircularProgress/>
+    return <div className="login">
+    <Backdrop
+    sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open = {true}
+    >
+    <CircularProgress/>
+    </Backdrop>
     </div>
   }
 

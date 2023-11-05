@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import './Login.css'
 import axios from 'axios'
 import { Alert } from '@mui/material'
-import {CircularProgress} from '@mui/material'
+import {CircularProgress, Backdrop} from '@mui/material'
 import { useAuthContext } from '../context/authContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -58,7 +58,11 @@ const Login = () => {
 
   if(loading){
     return <div className="login">
-        <CircularProgress/>
+<Backdrop
+  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open = {true}
+>
+  <CircularProgress/>
+</Backdrop>
     </div>
   }
 

@@ -3,12 +3,18 @@ import './Sidebar.css';
 import SidebarChat from './SidebarChat';
 import {Avatar,IconButton} from '@mui/material';
 import {Chat, SearchOutlined ,MoreVert, DonutLarge} from '@mui/icons-material';
+import { useChatContext } from '../context/chatContext';
+import { useAuthContext } from '../context/authContext';
 
 const Sidebar = () => {
+
+  const {chats} = useChatContext();
+  const {user} = useAuthContext();
+
   return (
     <div className='sidebar'>
        <div className="sidebar__header">
-          <Avatar/>
+          <Avatar src='https:xsgames.co/randomusers/avatar.php?g=male' />
           <div className="sidebar__headerRight">
               
               <IconButton>
@@ -23,23 +29,20 @@ const Sidebar = () => {
               
           </div>
        </div>
-       <div className="sidebar__search">
+       <div className="sidebar__search" >
         <SearchOutlined/>
         <div className="sidebar__searchContainer">
           <input placeholder='search or start a new conversation' type="text" />
         </div>
        </div>
        <div className="sidebar__chats">
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
-           <SidebarChat/>
+         {
+          chats.map(chat =>{
+            const chatUser = (user._id === chat.users[1]._id)?chat.users[0]:chat.users[1];
+            return <SidebarChat key={chat._id} name = {chatUser.name} image_url={chatUser.image_url} lastMessage = {'This is real time'}  />
+
+          })
+         }
        </div>
     </div>
   )

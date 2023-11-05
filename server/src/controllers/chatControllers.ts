@@ -4,7 +4,7 @@ import chatModel from '../models/chatModel';
 
 
 const getChats = asyncHandler(async (req:Request, res:Response, next:NextFunction) =>{
-      const chats = await chatModel.find({users:{$elemMatch:{$eq:req.user?._id}}})
+      const chats = await chatModel.find({users:{$elemMatch:{$eq:req.user?._id}}}).populate('users', '-password');
       res.status(200).json(chats);
 });
 
